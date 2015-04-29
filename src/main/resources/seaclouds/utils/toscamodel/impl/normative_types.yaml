@@ -1,4 +1,4 @@
-# Copyright 2015 Università di Pisa
+# Copyright 2015 Universita' di Pisa
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -8,10 +8,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-
 tosca_definitions_version: tosca_simple_yaml_1_0_0
-
 
 datatype_definitions:
     seaclouds.types.NodeNetworkInfo:
@@ -34,8 +31,20 @@ datatype_definitions:
     seaclouds.types.QosRequirements:
         properties:
             response_time:
-                type: float
+                    type: scalar-unit
+            execution_time:
+                    type: scalar-unit
+            availability:
+                    type: float
+
                 
+    seaclouds.types.QoSInfo:
+        properties:
+          benchmark_platform:
+            type: string
+          execution_time:
+            type: scalar-unit            
+
     seaclouds.types.os:
         properties:
             load_balancing:
@@ -46,6 +55,8 @@ datatype_definitions:
     
     seaclouds.types.os.linux.ubuntu:
         derived_from: seaclouds.types.os.linux
+
+
 
 
 node_types:
@@ -76,6 +87,8 @@ node_types:
         properties:
             qos_requirements:
                 type: seaclouds.types.QosRequirements
+            qos_info:
+                type: seaclouds.types.QosInfo
 
     seaclouds.nodes.Compute:
         derived_from: tosca.nodes.Compute
@@ -122,9 +135,18 @@ node_types:
                 type: scalar-unit
                 #constraints:
                  #   - greater_or_equal: 0 TB
+  
+    seaclouds.nodes.Compute.Amazon:
+      derived_from: seaclouds.nodes.Compute
+
+    seaclouds.nodes.Compute.HP:
+      derived_from: seaclouds.nodes.Compute
+
+    seaclouds.nodes.deploy:
+      derived_from: tosca.nodes.Root
 
     seaclouds.nodes.deploy.MySQL:
-        derived_from: tosca.nodes.Root
+        derived_from: tosca.nodes.deploy
         properties:
             port:
                 type: string
@@ -137,3 +159,12 @@ node_types:
             version:
                 type: string
 
+    seaclouds.nodes.deploy.Tomcat:
+      derived_from: tosca.nodes.deploy
+      properties:
+        name:
+          type: string
+        user:
+          type: string
+        password:
+          type: string
