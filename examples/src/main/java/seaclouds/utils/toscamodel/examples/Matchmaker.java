@@ -17,6 +17,7 @@
 package seaclouds.utils.toscamodel.examples;
 
 import seaclouds.utils.toscamodel.*;
+import seaclouds.utils.toscamodel.impl.NodeTemplate;
 
 import java.util.*;
 
@@ -28,12 +29,12 @@ public class Matchmaker {
     Matchmaker(IToscaEnvironment offerings){
         offeringEnvironment = offerings;
     }
-    public Map<INodeTemplate, List<INodeType>> Match(IToscaEnvironment aam) {
+    public Map<String, List<INodeType>> Match(IToscaEnvironment aam) {
         //workflow to read a Tosca file with AAM and compare them with cloud offerings from discoverer
-        INodeType snc = (INodeType) aam.getNamedEntity("seaclouds.nodes.compute");
-        INodeType snp = (INodeType) aam.getNamedEntity("seaclouds.nodes.platform");
+        INodeType snc = (INodeType) aam.getNamedEntity("seaclouds.nodes.Compute");
+        INodeType snp = (INodeType) aam.getNamedEntity("seaclouds.nodes.Platform");
 
-        List<INodeTemplate> matchableTopology = new ArrayList<>();
+        List<INodeTemplate> matchableTopology = new ArrayList<INodeTemplate>();
 
         for (INodeTemplate t : aam.getNodeTemplatesOfType(snc)) {
             matchableTopology.add(t);
@@ -42,7 +43,7 @@ public class Matchmaker {
             matchableTopology.add(t);
         }
 
-        Map<INodeTemplate,List<INodeType>> matchmaking = new HashMap<>();
+        Map<String,List<INodeType>> matchmaking = new HashMap<>();
         for (INodeTemplate e: matchableTopology) {
             INodeType aamType = e.baseType();
             String templateName = ((INamedEntity)aamType).name();
@@ -60,7 +61,7 @@ public class Matchmaker {
                 boolean valid = true;
                 for (Map.Entry<String,IProperty> entry : aamType.allProperties().entrySet()) {
                     IValue offeringValue = o.allAttributes().get(entry.getKey());
-                    IValue aamValue = o.allAttributes().get(entry.getKey());
+                    IValue aamValue = e.allAttributes().get(entry.getKey());
                     boolean constraintIsValid = true;
                     //for (IConstraint constraint : o.allProperties().get(entry.getKey()).constraints()) {
                     //   constraintIsValid = constraintIsValid && constraint.verify(offeringValue);
@@ -68,7 +69,7 @@ public class Matchmaker {
                     // this should compare using partial ordering
                     //if (!MatchMaker.betterThan(offeringValue,entry.getValue()))
 
-                    if(!constraintIsValid || !offeringValue.equals(aamValue))
+                    if(!constraintIsValid || aamValue!= null && !aamValue.equals(offeringValue))
                     {
                         valid = false;
                         break;
@@ -77,7 +78,7 @@ public class Matchmaker {
                 if(valid)
                     validOfferings.add(o);
             }
-            matchmaking.put(e,validOfferings);
+            matchmaking.put(((INamedEntity) e).name(),validOfferings);
         }
 
         return matchmaking;

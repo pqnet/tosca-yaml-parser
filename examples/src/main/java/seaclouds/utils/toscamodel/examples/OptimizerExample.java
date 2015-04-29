@@ -29,7 +29,7 @@ import java.util.*;
 public class OptimizerExample {
 
     //we provide an example of OptimizerExample that generates two simple solutions
-    public final int wantedSolutions = 2;
+    public final int wantedSolutions = 3;
 
     /*
      * This method shows how to interact with the parser to compute the score of a generated solution.

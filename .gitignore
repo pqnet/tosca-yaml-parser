@@ -18,9 +18,15 @@ hs_err_pid*
 *.swp
 *~
 
-/toscamodel/bin
-/toscamodel/out
-/toscamodel/.classpath
-/toscamodel/.project
-/toscamodel/.settings
-/toscamodel/target/
+/bin
+/out
+/.classpath
+/.project
+/.settings
+/target/
+/examples/bin
+/examples/out
+/examples/.classpath
+/examples/.project
+/examples/.settings
+/examples/target/

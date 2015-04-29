@@ -59,6 +59,8 @@ public abstract class NodeValue extends SchemaDefinition {
 
     @Override
     public boolean derivesFrom(ISchemaDefinition nodeType) {
-        return this.equals(nodeType) || (baseType!= null && baseType().derivesFrom(nodeType));
+        boolean equal = this.equals(nodeType);
+        boolean derives = equal || (baseType!= null && baseType().derivesFrom(nodeType));
+        return derives;
     }
 }

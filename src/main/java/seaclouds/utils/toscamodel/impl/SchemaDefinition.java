@@ -59,10 +59,12 @@ abstract public class SchemaDefinition implements ISchemaDefinition {
 
     @Override
     public boolean equals(Object obj) {
+        if(this == obj)
+            return true;
         if(!(obj instanceof  ISchemaDefinition))
             return false;
         ISchemaDefinition o = (ISchemaDefinition) obj;
-        if(this.baseType == null && o.baseType() != null)
+        if( (this.baseType == null && o.baseType() != null) || (this.baseType != null && o.baseType() == null))
             return false;
         if(this.baseType!= null && !this.baseType.equals(o.baseType()))
             return false;
@@ -116,4 +118,6 @@ abstract public class SchemaDefinition implements ISchemaDefinition {
 
         return declaredProperties;
     }
+
+
 }

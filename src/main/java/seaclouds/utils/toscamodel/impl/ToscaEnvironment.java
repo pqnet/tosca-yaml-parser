@@ -128,10 +128,6 @@ public class ToscaEnvironment implements  IToscaEnvironment {
 
     @Override
     public INamedEntity importWithSupertypes(INamedEntity entity) {
-        return importToMove(entity);
-    }
-
-    private INamedEntity importToMove(INamedEntity entity) {
         INamedEntity res = getNamedEntity(entity.name());
         if (res != null)
             return res;

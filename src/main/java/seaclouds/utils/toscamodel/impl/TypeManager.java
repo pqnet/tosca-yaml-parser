@@ -74,7 +74,7 @@ class TypeManager {
     public Iterable<INodeType> getNodeTypesDerivingFrom(INodeType rootType) {
         return Iterables.transform(
                 Iterables.filter(nodeTypes.values(),
-                        t -> t.derivesFrom(rootType) && !t.hidden),
+                        t -> !t.hidden && t.derivesFrom(rootType)),
                 t -> (INodeType)t);
     }
 
@@ -205,6 +205,8 @@ class TypeManager {
     }
 
     INamedEntity importNodeType(INamedEntity entity) {
+        if (entity == null)
+            return entity;
         INamedEntity res;
         importNodeType((INamedEntity) ((INodeType) entity).baseType());
         for (Map.Entry<String, IProperty> property : ((INodeType) entity).declaredProperties().entrySet()) {

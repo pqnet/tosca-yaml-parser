@@ -55,6 +55,7 @@ public interface IToscaEnvironment {
      * @param hideTypes if true, types imported this way will not be written to the output file
      */
     public void readFile(Reader input, boolean hideTypes);
+    default public void readFile(Reader input) { readFile(input,false); }
 
     public void writeFile(Writer output);
 
